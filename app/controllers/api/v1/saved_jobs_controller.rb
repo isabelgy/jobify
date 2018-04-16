@@ -8,4 +8,5 @@ class Api::V1::SavedJobsController < Api::V1::BaseController
 
   def delete
   end
+
 end
