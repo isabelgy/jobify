@@ -1,8 +1,8 @@
 class Api::V1::UsersController < Api::V1::BaseController
-  require 'rest-client'
+  # require 'rest-client'
   # require 'pry-byebug'
 
-  respond_to :json
+  # respond_to :json
 
   URL = "https://api.weixin.qq.com/sns/jscode2session".freeze
 
