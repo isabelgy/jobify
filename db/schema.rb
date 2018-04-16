@@ -10,9 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20180416085759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "jobs", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "company"
+    t.string "image"
+    t.string "location"
+    t.string "salary"
+    t.string "email"
+    t.string "phone"
+    t.string "wechat"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "saved_jobs", force: :cascade do |t|
+    t.bigint "job_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_id"], name: "index_saved_jobs_on_job_id"
+    t.index ["user_id"], name: "index_saved_jobs_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "openid"
+    t.string "password"
+    t.string "name"
+    t.integer "last_question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "saved_jobs", "jobs"
+  add_foreign_key "saved_jobs", "users"
 end
