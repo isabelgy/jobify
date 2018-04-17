@@ -22,6 +22,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     @user = User.find(params[:id])
+    score_and_tags
   end
 
   private
@@ -63,7 +64,133 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :openid, :password, :last_question_id)
+    params.require(:user).permit(:name, :openid, :password, :last_question_id, :tag_list, :i_trait_list, :ii_trait_list, :iii_trait_list, :iv_trait_list, :v_trait_list)
+  end
+
+  # methods for calculating personality scores and adding tags
+
+  def score_and_tags
+    i_surgency_extraversion = 0
+    ii_agreeableness = 0
+    iii_conscientiousness = 0
+    iv_emotional_stability = 0
+    v_intellect_imagination = 0
+
+#     @user = (User.find_by openid: wechat_email)
+
+    @user.answers.all.each do |answer|
+      primary_trait = answer.question.first_trait[/([A-Z])+/]
+      secondary_trait = answer.question.second_trait[/([A-Z])+/]
+      sign_primary = answer.question.first_trait[/\W/]
+      sign_secondary = answer.question.second_trait[/\W/]
+      primary_value = answer.question.first_value
+      secondary_value = answer.question.second_value
+      unless answer.swiped_yes
+        primary_value = -(primary_value)
+        secondary_value = -(secondary_value)
+      end
+
+      case primary_trait
+      when "V"
+      # checking if corresponding trait score is affected positively or negatively by the question
+        sign_primary == "+" ? v_intellect_imagination += primary_value : v_intellect_imagination -= primary_value
+      when "IV"
+        sign_primary == "+" ? iv_emotional_stability += primary_value : iv_emotional_stability -= primary_value
+      when "III"
+        sign_primary == "+" ? iii_conscientiousness += primary_value : iii_conscientiousness -= primary_value
+      when "II"
+        sign_primary == "+" ? ii_agreeableness += primary_value : ii_agreeableness -= primary_value
+      when "I"
+        sign_primary == "+" ? i_surgency_extraversion += primary_value : i_surgency_extraversion -= primary_value
+      end
+
+      case secondary_trait
+      when "V"
+        sign_secondary == "+" ? v_intellect_imagination += secondary_value : v_intellect_imagination -= secondary_value
+      when "IV"
+        sign_secondary == "+" ? iv_emotional_stability += secondary_value : iv_emotional_stability -= secondary_value
+      when "III"
+        sign_secondary == "+" ? iii_conscientiousness += secondary_value : iii_conscientiousness -= secondary_value
+      when "II"
+        sign_secondary == "+" ? ii_agreeableness += secondary_value : ii_agreeableness -= secondary_value
+      when "I"
+        sign_secondary == "+" ? i_surgency_extraversion += secondary_value : i_surgency_extraversion -= secondary_value
+      end
+
+
+      if i_surgency_extraversion >= 6
+        @user.i_trait_list = "outgoing, aggressive, assertive, sociable"
+      elsif i_surgency_extraversion >= 3
+        @user.i_trait_list = "outgoing, assertive"
+      elsif i_surgency_extraversion >= 0
+        @user.i_trait_list = "extraverted"
+      elsif i_surgency_extraversion <= -5
+        @user.i_trait_list = "distant, non-conflicting"
+      elsif i_surgency_extraversion <= -3
+        @user.i_trait_list = "reserved, loyal"
+      elsif i_surgency_extraversion <= 0
+        @user.i_trait_list = "intraverted"
+      end
+
+      if ii_agreeableness >= 6
+        @user.ii_trait_list = "talkative, empathetic, light-hearted, agreeable"
+      elsif ii_agreeableness >= 3
+        @user.ii_trait_list = "empathetic, warm-hearted"
+      elsif ii_agreeableness >= 0
+        @user.ii_trait_list = "collaborative"
+      elsif ii_agreeableness <= -5
+        @user.ii_trait_list = "independent, stubborn, direct, unemotional"
+      elsif ii_agreeableness <= -3
+        @user.ii_trait_list = "unemotional, direct"
+      elsif ii_agreeableness <= 0
+        @user.ii_trait_list = "independent"
+      end
+
+      if iii_conscientiousness >= 6
+        @user.iii_trait_list = "responsible, conscientious, structure-freak, perfectionist"
+      elsif iii_conscientiousness >= 3
+        @user.iii_trait_list = "responsible, thorough-thinking"
+      elsif iii_conscientiousness >= 0
+        @user.iii_trait_list = "aware"
+      elsif iii_conscientiousness <= -5
+        @user.iii_trait_list = "flexible, can-improvise, work-well-under-pressure, risk-taker"
+      elsif iii_conscientiousness <= -3
+        @user.iii_trait_list = "flexible, details-don't-matter"
+      elsif iii_conscientiousness <= 0
+        @user.iii_trait_list = "trusting"
+      end
+
+      if iv_emotional_stability >= 6
+        @user.iv_trait_list = "level-headed, not-taking-risk, low-reactions"
+      elsif iv_emotional_stability >= 3
+        @user.iv_trait_list = "level-headed, no-emotions"
+      elsif iv_emotional_stability >= 0
+        @user.iv_trait_list = "not-expressive"
+      elsif iv_emotional_stability <= -5
+        @user.iv_trait_list = "easily-excited, passionate, determined, emotional"
+      elsif iv_emotional_stability <= -3
+        @user.iv_trait_list = "passionate"
+      elsif iv_emotional_stability <= 0
+        @user.iv_trait_list = "expressive"
+      end
+
+      if v_intellect_imagination >= 6
+        @user.v_trait_list = "detail-oriented, perfectionist, scolar, over-thinker, out-of-the-box"
+      elsif v_intellect_imagination >= 3
+        @user.v_trait_list = "detail-oriented, facts-over-intuition, risk-avoiding"
+      elsif v_intellect_imagination >= 0
+        @user.v_trait_list = "detail-oriented"
+      elsif v_intellect_imagination <= -5
+        @user.v_trait_list = "intuitive, quick-decisions, flexible, don't-complicate"
+      elsif v_intellect_imagination <= -3
+        @user.v_trait_list = "intuitive, practical"
+      elsif v_intellect_imagination <= 0
+        @user.v_trait_list = "fast-paced"
+      end
+
+      @user.tag_list = @user.v_trait_list + @user.iv_trait_list + @user.iii_trait_list + @user.ii_trait_list + @user.i_trait_list
+      @user.save
+
   end
 
 end

@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180416095130) do
+
+ActiveRecord::Schema.define(version: 20180417025953) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "question_id"
+    t.boolean "swiped_yes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
 
   create_table "jobs", force: :cascade do |t|
     t.string "title"
@@ -30,6 +42,15 @@ ActiveRecord::Schema.define(version: 20180416095130) do
     t.string "attachment"
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.string "title"
+    t.string "first_trait"
+    t.string "second_trait"
+    t.float "first_value"
+    t.float "second_value"
+
+  end
+
   create_table "saved_jobs", force: :cascade do |t|
     t.bigint "job_id"
     t.bigint "user_id"
@@ -37,6 +58,31 @@ ActiveRecord::Schema.define(version: 20180416095130) do
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_saved_jobs_on_job_id"
     t.index ["user_id"], name: "index_saved_jobs_on_user_id"
+  end
+
+  create_table "taggings", id: :serial, force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "taggable_type"
+    t.integer "taggable_id"
+    t.string "tagger_type"
+    t.integer "tagger_id"
+    t.string "context", limit: 128
+    t.datetime "created_at"
+    t.index ["context"], name: "index_taggings_on_context"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
+    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
+  end
+
+  create_table "tags", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,6 +94,8 @@ ActiveRecord::Schema.define(version: 20180416095130) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users"
   add_foreign_key "saved_jobs", "jobs"
   add_foreign_key "saved_jobs", "users"
 end
