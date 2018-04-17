@@ -9,6 +9,7 @@ class Api::V1::JobsController < Api::V1::BaseController
 
   def new
     @job = Job.new
+  end
 
   def create
     @job = Job.new(job_params)
