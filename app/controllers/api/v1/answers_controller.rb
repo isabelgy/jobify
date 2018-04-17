@@ -7,6 +7,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
     @answer.user = @user
     @answer.question = @question
     @answer.save
+    @user.update(last_question_id: @question.id)
+    @user.save
   end
 
   private
