@@ -22,7 +22,11 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     @user = User.find(params[:id])
+    last_question = @user.questions.map {|q| q.id}
+    @user.update(last_question_id: last_question.max)
+    @user.save
     score_and_tags
+    @user
   end
 
   private
@@ -190,7 +194,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
       @user.tag_list = @user.v_trait_list + @user.iv_trait_list + @user.iii_trait_list + @user.ii_trait_list + @user.i_trait_list
       @user.save
-
+    end
   end
 
 end
