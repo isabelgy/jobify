@@ -21,8 +21,8 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def show
-    score_and_tags
     @user = User.find(params[:id])
+    score_and_tags
   end
 
   private
@@ -76,13 +76,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     iv_emotional_stability = 0
     v_intellect_imagination = 0
 
-    @user = (User.find_by openid: wechat_email)
+#     @user = (User.find_by openid: wechat_email)
 
     @user.answers.all.each do |answer|
-       primary_trait = answer.question.first_trait[/([A-Z])+/]
-       secondary_trait = answer.question.second_trait[/([A-Z])+/]
-       sign_primary = answer.question.first_trait[/\W/]
-       sign_secondary = answer.question.second_trait[/\W/]
+      primary_trait = answer.question.first_trait[/([A-Z])+/]
+      secondary_trait = answer.question.second_trait[/([A-Z])+/]
+      sign_primary = answer.question.first_trait[/\W/]
+      sign_secondary = answer.question.second_trait[/\W/]
       primary_value = answer.question.first_value
       secondary_value = answer.question.second_value
       unless answer.swiped_yes
