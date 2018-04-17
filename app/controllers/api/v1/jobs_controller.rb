@@ -1,7 +1,7 @@
 class Api::V1::JobsController < Api::V1::BaseController
 
   def index
-    @jobs = Job.all
+    # @jobs = Job.all
     # finding jobs based on user tag_list
     @user = User.find(params[:id])
     @jobs = Job.tagged_with([@user.tag_list], :any => true)
@@ -17,6 +17,7 @@ class Api::V1::JobsController < Api::V1::BaseController
 
   def create
     @job = Job.new(job_params)
+    # @job.tag_list = "#{params[:tags]}"
     @job.save
   end
 

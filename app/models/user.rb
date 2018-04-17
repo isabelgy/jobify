@@ -5,5 +5,5 @@ class User < ApplicationRecord
   has_many :questions, :through => :answers
 
   acts_as_taggable # Alias for acts_as_taggable_on :tags
-  acts_as_taggable_on :traits
+  acts_as_taggable_on :i_traits, :ii_traits, :iii_traits, :iv_traits, :v_traits
 end
