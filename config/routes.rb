@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         member do
           put "/", to: "users#save_job"
         end
+      put '/saved_jobs', to: "users#un_save"
       end
 
 

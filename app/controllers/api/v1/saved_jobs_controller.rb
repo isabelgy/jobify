@@ -14,6 +14,7 @@ class Api::V1::SavedJobsController < Api::V1::BaseController
 
 
 
+
     def saved_jobs
       @user = User.find(params[:id])
       render json: @user.favorited_jobs

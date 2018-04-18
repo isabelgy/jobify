@@ -20,6 +20,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: @user if @user.persisted?
   end
 
+  def un_save
+    @user = User.find(params[:user_id])
+    @user.favorites.to_a[params[:i]].delete
+    @user.save
+    @user.reload
+  end
+
   def save_job
     @job = Job.find(params[:job_id])
     @user = User.find(params[:user_id])
