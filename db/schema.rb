@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20180417025953) do
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +46,6 @@ ActiveRecord::Schema.define(version: 20180417025953) do
     t.string "second_trait"
     t.float "first_value"
     t.float "second_value"
-
   end
 
   create_table "saved_jobs", force: :cascade do |t|
