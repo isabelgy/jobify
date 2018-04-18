@@ -1,4 +1,10 @@
 class User < ApplicationRecord
+  after_initialize :set_defaults, unless: :persisted?
+
+  def set_defaults
+    self.last_question_id  ||= 1
+  end
+
   has_many :saved_jobs, dependent: :destroy
   has_many :jobs, :through => :saved_jobs
   has_many :answers, dependent: :destroy
