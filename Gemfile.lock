@@ -40,6 +40,8 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (5.0.0)
       activerecord (>= 4.2.8)
+    acts_as_favoritor (2.0.1)
+      activerecord (>= 5.0)
     arel (8.0.0)
     autoprefixer-rails (8.3.0)
       execjs
@@ -191,6 +193,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  acts_as_favoritor
   autoprefixer-rails
   bootstrap-sass (~> 3.3)
   figaro
