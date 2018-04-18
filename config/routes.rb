@@ -3,14 +3,17 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:create, :show] do
         member do
-          resources :saved_jobs, only: [ :index, :create, :delete ]
+          put "/", to: "users#save_job"
         end
       end
 
-    resources :questions, only: [:show, :index]
+
+    resources :questions, only: [:show]
     resources :answers, only: [:create]
     resources :jobs, only: [ :show, :update, :create, :edit, :delete, :new ]
     put '/jobs', to: 'jobs#index'
+    put '/questions', to: 'questions#index'
+
 
     end
   end
