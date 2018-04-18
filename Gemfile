@@ -18,6 +18,7 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'acts-as-taggable-on'
 gem 'rest-client'
+gem 'acts_as_favoritor'
 
 
 group :development do

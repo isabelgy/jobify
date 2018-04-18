@@ -20,6 +20,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: @user if @user.persisted?
   end
 
+  def save_job
+    @job = Job.find(params[:job_id])
+    @user = User.find(params[:user_id])
+    @user.favorite @job
+    @user.save
+  end
+
   def show
     @user = User.find(params[:id])
     last_question = @user.questions.map {|q| q.id}
@@ -68,7 +75,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :openid, :password, :last_question_id, :tag_list, :i_trait_list, :ii_trait_list, :iii_trait_list, :iv_trait_list, :v_trait_list)
+    params.require(:user).permit(:name, :openid, :password, :last_question_id, :tag_list, :i_trait_list, :ii_trait_list, :iii_trait_list, :iv_trait_list, :v_trait_list, :favorites)
   end
 
   # methods for calculating personality scores and adding tags
