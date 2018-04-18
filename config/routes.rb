@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         member do
           put "/", to: "users#save_job"
         end
+      put '/saved_jobs', to: "users#un_save"
       end
 
 
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
     resources :jobs, only: [ :show, :update, :create, :edit, :delete, :new ]
     put '/jobs', to: 'jobs#index'
     put '/questions', to: 'questions#index'
+    put '/saved_jobs', to: 'saved_jobs#saved_jobs'
 
 
     end

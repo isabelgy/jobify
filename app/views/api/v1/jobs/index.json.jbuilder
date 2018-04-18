@@ -3,3 +3,9 @@ json.jobs do
     json.extract! job, :id, :title, :company, :attachment, :location, :salary, :email, :phone, :wechat, :description, :tag_list
   end
 end
+
+json.tags do
+  json.array! @tags do |tag|
+    json.extract! tag
+  end
+end

@@ -1,4 +1,5 @@
 class Api::V1::SavedJobsController < Api::V1::BaseController
+
   def create
     @saved_job = SavedJob.new(saved_jobs_params)
     @job = Job.find(@saved_jobs[:job_id])
@@ -12,9 +13,13 @@ class Api::V1::SavedJobsController < Api::V1::BaseController
 
 
 
-  def index
-    @saved_jobs = SavedJob.all
-  end
+
+
+    def saved_jobs
+      @user = User.find(params[:id])
+      render json: @user.favorited_jobs
+    end
+
 
   def destroy
     @saved_job = SavedJob.find(params[:id])
