@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+
   after_initialize :set_defaults, unless: :persisted?
 
   def set_defaults
