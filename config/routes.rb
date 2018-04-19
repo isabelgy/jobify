@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :users, only: [:create, :show] do
         member do
           put "/", to: "users#save_job"
+          post "/", to: "users#my_jobs"
         end
       put '/saved_jobs', to: "users#un_save"
       end
