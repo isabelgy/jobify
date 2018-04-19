@@ -26,6 +26,8 @@ class Api::V1::JobsController < Api::V1::BaseController
   def create
     @job = Job.new(job_params)
     # @job.tag_list = "#{params[:tags]}"
+    @user = User.find(params[:user_id])
+    @job.user = @user
     @job.tag_list = params[:tag_list]
     @job.save
   end
@@ -46,7 +48,7 @@ class Api::V1::JobsController < Api::V1::BaseController
 
   private
   def job_params
-    params.require(:job).permit(:title, :company, :description, :image, :location, :salary, :email, :phone, :wechat, :attachment, :tag_list)
+    params.require(:job).permit(:title, :company, :description, :image, :location, :salary, :email, :phone, :wechat, :attachment, :user_id, :tag_list)
   end
 
 end

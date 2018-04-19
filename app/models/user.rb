@@ -7,8 +7,10 @@ class User < ApplicationRecord
 
   acts_as_favoritor
 
+  has_many :jobs
+
   has_many :saved_jobs, dependent: :destroy
-  has_many :jobs, :through => :saved_jobs
+  # has_many :jobs, :through => :saved_jobs
   has_many :answers, dependent: :destroy
   has_many :questions, :through => :answers
 
