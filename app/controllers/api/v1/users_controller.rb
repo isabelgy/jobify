@@ -87,7 +87,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:name, :openid, :password, :last_question_id, :tag_list, :i_trait_list, :ii_trait_list, :iii_trait_list, :iv_trait_list, :v_trait_list, :favorites)
+    params.require(:user).permit(:job_id, :name, :openid, :password, :last_question_id, :tag_list, :i_trait_list, :ii_trait_list, :iii_trait_list, :iv_trait_list, :v_trait_list, :favorites)
   end
 
   # methods for calculating personality scores and adding tags
