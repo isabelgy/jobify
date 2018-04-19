@@ -1,4 +1,5 @@
 class Job < ApplicationRecord
+  belongs_to :user
   has_many :saved_jobs
   has_many :users, :through => :saved_jobs
   validates :title, presence: true
