@@ -7,8 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 Job.delete_all
 Answer.delete_all
+# Answer.truncate_me!
 User.delete_all
 Question.delete_all
+Question.truncate_me!
 require 'csv'
 
 
