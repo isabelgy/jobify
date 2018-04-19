@@ -3,16 +3,22 @@ class Api::V1::JobsController < Api::V1::BaseController
   def index
     # @jobs = Job.all
     # finding jobs based on user tag_list
-    @user = User.find(params[:id])
-    @jobs = Job.tagged_with([@user.tag_list], :any => true)
 
-    @tags = []
-    @jobs.each do |job|
-      @user.tag_list.each do |tag|
-        (@tags << tag) if job.tag_list.include?("#{tag}")
-      end
-    end
-    @tags
+    # Job.tagged_with([user.tag_list], :any => true).where.not(id: user.favorited_jobs[0.ids)
+
+    @user = User.find(params[:id])
+    fav_ids = user.favorited_jobs.ids
+    jobs_with_tags = Job.tagged_with([@user.tag_list], :any => true)
+    @jobs = jobs_with_tags.where.not(id: fav_ids)
+    @jobs
+
+    # @tags = []
+    # @jobs.each do |job|
+    #   @user.tag_list.each do |tag|
+    #     (@tags << tag) if job.tag_list.include?("#{tag}")
+    #   end
+    # end
+    # @tags
   end
 
   def show
