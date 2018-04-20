@@ -32,12 +32,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user.reload
   end
 
-  def save_job
-    @job = Job.find(params[:job_id])
-    @user = User.find(params[:user_id])
-    @user.favorite @job
-    @user.save
-  end
+
 
   def show
     @user = User.find(params[:id])
