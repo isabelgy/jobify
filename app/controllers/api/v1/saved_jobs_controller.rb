@@ -1,19 +1,23 @@
 class Api::V1::SavedJobsController < Api::V1::BaseController
 
+  # def create
+  #   @saved_job = SavedJob.new(saved_jobs_params)
+  #   @job = Job.find(@saved_jobs[:job_id])
+  #   @saved_job.job  = @job
+  #   @user = User.find(params[:user_id])
+  #   @saved_job.user = @user
+  #   @saved_job.save
+
+  #   render json: @saved_job
+  # end
+
+
   def create
-    @saved_job = SavedJob.new(saved_jobs_params)
-    @job = Job.find(@saved_jobs[:job_id])
-    @saved_job.job  = @job
+    @job = Job.find(params[:job_id])
     @user = User.find(params[:user_id])
-    @saved_job.user = @user
-    @saved_job.save
-
-    render json: @saved_job
+    @user.favorite @job
+    @user.save
   end
-
-
-
-
 
     def saved_jobs
       @user = User.find(params[:id])
