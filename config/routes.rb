@@ -3,19 +3,19 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:create, :show] do
         member do
-          put "/", to: "users#save_job"
+          get "/", to: "users#save_job"
           post "/", to: "users#my_jobs"
         end
-      put '/saved_jobs', to: "users#un_save"
+      get '/saved_jobs', to: "users#un_save"
       end
 
 
     resources :questions, only: [:show]
     resources :answers, only: [:create]
     resources :jobs, only: [ :show, :update, :create, :edit, :destroy, :new ]
-    put '/jobs', to: 'jobs#index'
-    put '/questions', to: 'questions#index'
-    put '/saved_jobs', to: 'saved_jobs#saved_jobs'
+    get '/jobs', to: 'jobs#index'
+    get '/questions', to: 'questions#index'
+    get '/saved_jobs', to: 'saved_jobs#saved_jobs'
 
 
     end
