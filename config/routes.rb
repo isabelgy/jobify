@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
     resources :questions, only: [:show]
     resources :answers, only: [:create]
-    resources :jobs, only: [ :show, :update, :create, :edit, :delete, :new ]
+    resources :jobs, only: [ :show, :update, :create, :edit, :destroy, :new ]
     put '/jobs', to: 'jobs#index'
     put '/questions', to: 'questions#index'
     put '/saved_jobs', to: 'saved_jobs#saved_jobs'
