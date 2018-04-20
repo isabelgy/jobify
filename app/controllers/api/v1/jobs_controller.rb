@@ -41,6 +41,8 @@ class Api::V1::JobsController < Api::V1::BaseController
   def update
     @job = Job.find(params[:id])
     @job.update(job_params)
+    @job.tag_list = params[:tag_list]
+    @job.save
   end
 
   def destroy
