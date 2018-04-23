@@ -27,7 +27,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def un_save
     @user = User.find(params[:user_id])
-    @user.favorites.to_a[params[:i]].delete
+    @user.favorite(@job).destroy
     @user.save
     @user.reload
   end

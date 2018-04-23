@@ -6,7 +6,7 @@ Rails.application.routes.draw do
           # get "/", to: "users#save_job"
           post "/", to: "users#my_jobs"
         end
-      get '/saved_jobs', to: "users#un_save"
+      put '/saved_jobs', to: "users#un_save"
       end
 
 
