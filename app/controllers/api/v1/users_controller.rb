@@ -7,8 +7,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   URL = "https://api.weixin.qq.com/sns/jscode2session".freeze
 
   def create
-    require 'pry-byebug'
-    binding.pry
     @user = (User.find_by openid: wechat_email) || User.new(user_wechat_params)
 
     # unless
