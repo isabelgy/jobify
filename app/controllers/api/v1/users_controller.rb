@@ -38,8 +38,9 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user = User.find(params[:id])
     last_question = @user.questions.map {|q| q.id}
     @user.update(last_question_id: last_question.max)
-    @user.save
     score_and_tags
+    @user.save
+    @user.reload
     @user
   end
 
