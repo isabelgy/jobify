@@ -2,7 +2,7 @@ class User < ApplicationRecord
   after_initialize :set_defaults, unless: :persisted?
 
   def set_defaults
-    self.last_question_id  ||= 1
+    self.last_question_id  ||= Question.first.id
   end
 
   acts_as_favoritor
