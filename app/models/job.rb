@@ -13,6 +13,18 @@ class Job < ApplicationRecord
     self.tag_list.each do |tag|
       percent += 20 if user.tag_list.include? tag
     end
-    return percent
+    if percent == 100
+      return "You're the one!"
+    elsif percent == 80
+      return "Perfect fit!"
+    elsif percent == 60
+      return "Solid match!"
+    elsif percent == 40
+      return "A good fit"
+    elsif percent == 20
+      return "You have a shot"
+    else
+      return "Skip this one"
+    end
   end
 end
