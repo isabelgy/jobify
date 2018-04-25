@@ -1,6 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
   # require 'rest-client'
   # require 'pry-byebug'
+  before_action :score_and_tags, only: [:show]
 
   # respond_to :json
 
@@ -36,12 +37,12 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
   def show
-    @user = User.find(params[:id])
+
     unless @user.last_question_id == Question.first.id
       last_question = @user.questions.map {|q| q.id}
       @user.update(last_question_id: last_question.max)
     end
-    score_and_tags
+
     @user.save
     @user.reload
     @user
@@ -92,6 +93,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   # methods for calculating personality scores and adding tags
 
   def score_and_tags
+    @user = User.find(params[:id])
     i_surgency_extraversion = 0
     ii_agreeableness = 0
     iii_conscientiousness = 0
