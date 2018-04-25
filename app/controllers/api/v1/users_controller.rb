@@ -140,8 +140,7 @@ class Api::V1::UsersController < Api::V1::BaseController
       when "I"
         sign_secondary == "+" ? i_surgency_extraversion += secondary_value : i_surgency_extraversion -= secondary_value
       end
-
-
+    end
       if i_surgency_extraversion >= 6
         @user.i_trait_list = "outgoing, driven, assertive, sociable"
       elsif i_surgency_extraversion >= 3
@@ -214,7 +213,6 @@ class Api::V1::UsersController < Api::V1::BaseController
 
       @user.tag_list = @user.v_trait_list + @user.iv_trait_list + @user.iii_trait_list + @user.ii_trait_list + @user.i_trait_list
       @user.save
-    end
   end
 
 end
