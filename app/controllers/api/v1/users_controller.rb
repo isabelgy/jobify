@@ -37,8 +37,10 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     @user = User.find(params[:id])
-    last_question = @user.questions.map {|q| q.id}
-    @user.update(last_question_id: last_question.max)
+    unless @user.last_question_id == Question.first.id
+      last_question = @user.questions.map {|q| q.id}
+      @user.update(last_question_id: last_question.max)
+    end
     score_and_tags
     @user.save
     @user.reload
@@ -139,13 +141,13 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
       if i_surgency_extraversion >= 6
-        @user.i_trait_list = "outgoing, aggressive, assertive, sociable"
+        @user.i_trait_list = "outgoing, driven, assertive, sociable"
       elsif i_surgency_extraversion >= 3
         @user.i_trait_list = "outgoing, assertive"
       elsif i_surgency_extraversion >= 0
         @user.i_trait_list = "extraverted"
       elsif i_surgency_extraversion <= -5
-        @user.i_trait_list = "distant, non-conflicting"
+        @user.i_trait_list = "loyal, indirect, non-conflicting"
       elsif i_surgency_extraversion <= -3
         @user.i_trait_list = "reserved, loyal"
       elsif i_surgency_extraversion <= 0
@@ -159,21 +161,21 @@ class Api::V1::UsersController < Api::V1::BaseController
       elsif ii_agreeableness >= 0
         @user.ii_trait_list = "collaborative"
       elsif ii_agreeableness <= -5
-        @user.ii_trait_list = "independent, stubborn, direct, unemotional"
+        @user.ii_trait_list = "independent, determined, direct"
       elsif ii_agreeableness <= -3
-        @user.ii_trait_list = "unemotional, direct"
+        @user.ii_trait_list = "self-going, direct"
       elsif ii_agreeableness <= 0
         @user.ii_trait_list = "independent"
       end
 
       if iii_conscientiousness >= 6
-        @user.iii_trait_list = "responsible, conscientious, structure-freak, perfectionist"
+        @user.iii_trait_list = "responsible, structure-freak, perfectionist"
       elsif iii_conscientiousness >= 3
-        @user.iii_trait_list = "responsible, thorough-thinking"
+        @user.iii_trait_list = "responsible, thorough, detail-oriented"
       elsif iii_conscientiousness >= 0
         @user.iii_trait_list = "aware"
       elsif iii_conscientiousness <= -5
-        @user.iii_trait_list = "flexible, can-improvise, work-well-under-pressure, risk-taker"
+        @user.iii_trait_list = "flexible, can-improvise, great-under-pressure, risk-taker"
       elsif iii_conscientiousness <= -3
         @user.iii_trait_list = "flexible, details-don't-matter"
       elsif iii_conscientiousness <= 0
@@ -181,29 +183,29 @@ class Api::V1::UsersController < Api::V1::BaseController
       end
 
       if iv_emotional_stability >= 6
-        @user.iv_trait_list = "level-headed, not-taking-risk, low-reactions"
+        @user.iv_trait_list = "level-headed, risk-averse, unemotional"
       elsif iv_emotional_stability >= 3
-        @user.iv_trait_list = "level-headed, no-emotions"
+        @user.iv_trait_list = "level-headed, unemotional"
       elsif iv_emotional_stability >= 0
-        @user.iv_trait_list = "not-expressive"
+        @user.iv_trait_list = "steady"
       elsif iv_emotional_stability <= -5
-        @user.iv_trait_list = "easily-excited, passionate, determined, emotional"
+        @user.iv_trait_list = "easily-excited, passionate, emotional"
       elsif iv_emotional_stability <= -3
-        @user.iv_trait_list = "passionate"
+        @user.iv_trait_list = "passionate, risk-taker"
       elsif iv_emotional_stability <= 0
         @user.iv_trait_list = "expressive"
       end
 
       if v_intellect_imagination >= 6
-        @user.v_trait_list = "detail-oriented, perfectionist, scolar, over-thinker, out-of-the-box"
+        @user.v_trait_list = "thorough, cynical, perfectionist, out-of-the-box"
       elsif v_intellect_imagination >= 3
-        @user.v_trait_list = "detail-oriented, facts-over-intuition, risk-avoiding"
+        @user.v_trait_list = "thorough, cynical, risk-averse"
       elsif v_intellect_imagination >= 0
-        @user.v_trait_list = "detail-oriented"
+        @user.v_trait_list = "analytical"
       elsif v_intellect_imagination <= -5
-        @user.v_trait_list = "intuitive, quick-decisions, flexible, don't-complicate"
+        @user.v_trait_list = "intuitive, quick-decisions, flexible, risk-taker"
       elsif v_intellect_imagination <= -3
-        @user.v_trait_list = "intuitive, practical"
+        @user.v_trait_list = "flexible, practical"
       elsif v_intellect_imagination <= 0
         @user.v_trait_list = "fast-paced"
       end
