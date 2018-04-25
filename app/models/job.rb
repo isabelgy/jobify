@@ -20,11 +20,11 @@ class Job < ApplicationRecord
     elsif percent == 60
       return "Solid match!"
     elsif percent == 40
-      return "A good fit"
+      return "A good fit!"
     elsif percent == 20
-      return "You have a shot"
+      return "You have a shot!"
     else
-      return "Skip this one"
+      return "Skip this one :("
     end
   end
 end
