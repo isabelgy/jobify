@@ -9,7 +9,7 @@ class Api::V1::JobsController < Api::V1::BaseController
     @user = User.find(params[:id])
     fav_ids = @user.favorited_jobs.ids
     jobs_with_tags = Job.tagged_with([@user.tag_list], :any => true)
-    @jobs = jobs_with_tags.where.not(id: fav_ids)
+    @jobs = jobs_with_tags.where.not(id: fav_ids).where.not(user_id: params[:id])
     @jobs
 
     # @tags = []
